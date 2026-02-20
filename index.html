@@ -537,13 +537,13 @@
             { id: 31, name: "幸运7", category: "classic", iconUrl: "https://img.icons8.com/color/96/7.png", demoUrl: "https://www.pgsoft.com/en/games/lucky-seven/" },
             { id: 32, name: "钻石女王", category: "classic", iconUrl: "https://img.icons8.com/color/96/diamond.png", demoUrl: "https://www.pgsoft.com/en/games/diamond-queen/" },
             { id: 33, name: "黄金矿工", category: "adventure", iconUrl: "https://img.icons8.com/color/96/gold.png", demoUrl: "https://www.pgsoft.com/en/games/gold-miner/" },
-            { id: 34, name: "超级777", category: "classic,hot", iconUrl: "https://img.icons8.com/color/96/slot-machine.png", demoUrl: "https://www.pgsoft.com/en/games/super-777/" },
-            { id: 35, name: "疯狂猴子", category: "adventure", iconUrl: "https://img.icons8.com/color/96/monkey.png", demoUrl: "https://www.pgsoft.com/en/games/crazy-monkey/" },
-            { id: 36, name: "冰雪女王", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/ice.png", demoUrl: "https://www.pgsoft.com/en/games/ice-queen/" },
-            { id: 37, name: "火焰凤凰", category: "fantasy,asian", iconUrl: "https://img.icons8.com/color/96/fire.png", demoUrl: "https://www.pgsoft.com/en/games/fire-phoenix/" },
-            { id: 38, name: "财神爷", category: "asian,hot", iconUrl: "https://img.icons8.com/color/96/god-of-wealth.png", demoUrl: "https://www.pgsoft.com/en/games/wealth-god/" },
-            { id: 39, name: "龙珠传奇", category: "fantasy,asian", iconUrl: "https://img.icons8.com/color/96/dragon-ball.png", demoUrl: "https://www.pgsoft.com/en/games/dragon-ball/" },
-            { id: 40, name: "幸运转盘", category: "classic", iconUrl: "https://img.icons8.com/color/96/roulette.png", demoUrl: "https://www.pgsoft.com/en/games/lucky-wheel/" }
+            { id: 34, name: "超级777", category: "classic,hot", iconUrl: "https://img.icons8.com/color/96/slot-machine.png", demoUrl: null, isSimulated: true },
+            { id: 35, name: "疯狂猴子", category: "adventure", iconUrl: "https://img.icons8.com/color/96/monkey.png", demoUrl: null, isSimulated: true },
+            { id: 36, name: "冰雪女王", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/ice.png", demoUrl: null, isSimulated: true },
+            { id: 37, name: "火焰凤凰", category: "fantasy,asian", iconUrl: "https://img.icons8.com/color/96/fire.png", demoUrl: null, isSimulated: true },
+            { id: 38, name: "财神爷", category: "asian,hot", iconUrl: "https://img.icons8.com/color/96/god-of-wealth.png", demoUrl: null, isSimulated: true },
+            { id: 39, name: "龙珠传奇", category: "fantasy,asian", iconUrl: "https://img.icons8.com/color/96/dragon-ball.png", demoUrl: null, isSimulated: true },
+            { id: 40, name: "幸运转盘", category: "classic", iconUrl: "https://img.icons8.com/color/96/roulette.png", demoUrl: null, isSimulated: true }
         ];
 
         let currentCategory = 'all';
@@ -553,22 +553,43 @@
         let tg = window.Telegram.WebApp;
         
         document.addEventListener('DOMContentLoaded', function() {
-            tg.ready();
-            tg.expand();
-            
-            // 渲染游戏列表
-            renderGames();
-            
-            // 图片懒加载
-            setupLazyLoad();
+            try {
+                console.log('DOM loaded, gamesData length:', gamesData.length);
+                console.log('gamesData:', gamesData);
+                
+                if (typeof tg !== 'undefined') {
+                    tg.ready();
+                    tg.expand();
+                }
+                
+                // 渲染游戏列表
+                renderGames();
+                
+                // 图片懒加载
+                setupLazyLoad();
+            } catch (error) {
+                console.error('Error during initialization:', error);
+                document.getElementById('gamesGrid').innerHTML = '<div style="text-align:center;padding:40px;color:red;">加载出错: ' + error.message + '</div>';
+            }
         });
 
         // 渲染游戏列表
         function renderGames() {
+            console.log('Rendering games, count:', filteredGames.length);
             const grid = document.getElementById('gamesGrid');
+            if (!grid) {
+                console.error('gamesGrid element not found!');
+                return;
+            }
             grid.innerHTML = '';
             
+            if (filteredGames.length === 0) {
+                grid.innerHTML = '<div style="text-align:center;padding:40px;color:#999;">暂无游戏</div>';
+                return;
+            }
+            
             filteredGames.forEach(game => {
+                console.log('Rendering game:', game.name);
                 const card = document.createElement('div');
                 card.className = 'game-card';
                 card.onclick = () => {
@@ -581,15 +602,20 @@
                     }
                 };
                 
+                const isHot = game.category.includes('hot');
+                const isNew = game.category.includes('new');
+                
                 card.innerHTML = `
-                    <div style="width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);font-size:40px;">
-                        ${game.icon}
+                    <div style="width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);position:relative;overflow:hidden;">
+                        <img src="${game.iconUrl}" alt="${game.name}" style="width:70%;height:70%;object-fit:contain;" onerror="this.src='https://img.icons8.com/color/96/casino.png'">
+                        ${isHot ? '<div style="position:absolute;top:5px;right:5px;background:#FF6B6B;color:white;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;">HOT</div>' : ''}
+                        ${isNew ? '<div style="position:absolute;top:5px;left:5px;background:#4ECDC4;color:white;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;">NEW</div>' : ''}
                     </div>
                     <div class="game-info">
                         <div class="game-name">${game.name}</div>
-                        <div class="game-tag">试玩</div>
+                        <div class="game-tag">${game.isLocal ? '可玩' : '演示'}</div>
                     </div>
-                `;
+                `;,
                 
                 grid.appendChild(card);
             });
