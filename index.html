@@ -415,18 +415,14 @@
         </div>
     </div>
 
-    <!-- 游戏播放器模态框 -->
+    <!-- 游戏详情模态框 -->
     <div class="game-modal" id="gameModal">
         <div class="modal-header">
-            <div class="modal-title" id="modalTitle">游戏试玩</div>
+            <div class="modal-title" id="modalTitle">游戏详情</div>
             <button class="close-btn" onclick="closeGame()">✕</button>
         </div>
-        <div class="game-frame-container">
-            <div class="loading-overlay" id="loadingOverlay">
-                <div class="loading-spinner"></div>
-                <div>正在加载游戏...</div>
-            </div>
-            <iframe class="game-frame" id="gameFrame" allowfullscreen></iframe>
+        <div class="game-detail-content" id="gameDetailContent" style="flex:1;overflow-y:auto;padding:20px;background:white;">
+            <!-- 动态内容 -->
         </div>
     </div>
 
@@ -514,7 +510,7 @@
             filteredGames.forEach(game => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
-                card.onclick = () => openGame(game);
+                card.onclick = () => openGameDetail(game);
                 
                 card.innerHTML = `
                     <div style="width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);font-size:40px;">
@@ -583,38 +579,144 @@
 
         // 打开游戏
         function openGame(game) {
-            const modal = document.getElementById('gameModal');
-            const frame = document.getElementById('gameFrame');
-            const title = document.getElementById('modalTitle');
-            const loading = document.getElementById('loadingOverlay');
+            // 触觉反馈
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
             
-            title.textContent = game.name + ' - 试玩版';
+            // 显示提示信息
+            showNotification('正在启动 ' + game.name + '...');
+            
+            // 使用外部浏览器打开游戏
+            // PG Soft 游戏需要通过官方渠道访问
+            const officialUrls = [
+                'https://www.pgsoft.com',
+                'https://pgsoft.com',
+                'https://www.pocketgamesoft.com'
+            ];
+            
+            // 尝试打开官方试玩页面
+            const gameSearchUrl = 'https://www.google.com/search?q=PG+Soft+' + encodeURIComponent(game.name) + '+demo';
+            
+            // 在 Telegram 内打开链接
+            if (tg.openLink) {
+                tg.openLink(gameSearchUrl, {try_instant_view: true});
+            } else {
+                window.open(gameSearchUrl, '_blank');
+            }
+        }
+        
+        // 显示通知
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #4A90E2 0%, #7B68EE 100%);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 25px;
+                font-size: 14px;
+                z-index: 10000;
+                animation: slideDown 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+
+        // 关闭游戏详情
+        function closeGame() {
+            const modal = document.getElementById('gameModal');
+            modal.classList.remove('active');
+        }
+        
+        // 打开游戏详情
+        function openGameDetail(game) {
+            const modal = document.getElementById('gameModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('gameDetailContent');
+            
+            title.textContent = game.name;
             modal.classList.add('active');
             
-            // 显示加载动画
-            loading.style.display = 'flex';
-            
-            // 设置游戏URL
-            frame.src = game.demoUrl;
-            
-            // 游戏加载完成后隐藏加载动画
-            frame.onload = function() {
-                loading.style.display = 'none';
-            };
+            content.innerHTML = `
+                <div style="text-align:center;padding:40px 20px;">
+                    <div style="font-size:80px;margin-bottom:20px;">${game.icon}</div>
+                    <h2 style="font-size:24px;margin-bottom:16px;color:#1A1A2E;">${game.name}</h2>
+                    <p style="color:#6B7280;margin-bottom:30px;">PG Soft 热门电子游戏</p>
+                    
+                    <div style="background:#F5F7FA;border-radius:12px;padding:20px;margin-bottom:30px;text-align:left;">
+                        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E0E0E0;">
+                            <span style="color:#6B7280;">游戏类型</span>
+                            <span style="font-weight:500;">电子老虎机</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E0E0E0;">
+                            <span style="color:#6B7280;">开发商</span>
+                            <span style="font-weight:500;">PG Soft</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;padding:10px 0;">
+                            <span style="color:#6B7280;">试玩模式</span>
+                            <span style="font-weight:500;color:#4CAF50;">✓ 支持</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="openExternalGame('${game.name}')" style="
+                        background: linear-gradient(135deg, #4A90E2 0%, #7B68EE 100%);
+                        color: white;
+                        border: none;
+                        padding: 16px 40px;
+                        border-radius: 30px;
+                        font-size: 18px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        width: 100%;
+                        margin-bottom: 12px;
+                    ">🎮 开始试玩</button>
+                    
+                    <button onclick="closeGame()" style="
+                        background: #F5F7FA;
+                        color: #6B7280;
+                        border: none;
+                        padding: 14px 40px;
+                        border-radius: 30px;
+                        font-size: 16px;
+                        cursor: pointer;
+                        width: 100%;
+                    ">返回</button>
+                    
+                    <p style="margin-top:20px;font-size:12px;color:#999;">
+                        点击"开始试玩"将在浏览器中打开游戏页面
+                    </p>
+                </div>
+            `;
             
             // 触觉反馈
             if (tg.HapticFeedback) {
                 tg.HapticFeedback.impactOccurred('light');
             }
         }
-
-        // 关闭游戏
-        function closeGame() {
-            const modal = document.getElementById('gameModal');
-            const frame = document.getElementById('gameFrame');
+        
+        // 在外部浏览器打开游戏
+        function openExternalGame(gameName) {
+            showNotification('正在打开游戏...');
             
-            modal.classList.remove('active');
-            frame.src = '';
+            // 使用 Google 搜索游戏试玩
+            const searchUrl = 'https://www.google.com/search?q=PG+Soft+' + encodeURIComponent(gameName) + '+demo+play';
+            
+            if (tg.openLink) {
+                tg.openLink(searchUrl);
+            } else {
+                window.open(searchUrl, '_blank');
+            }
+            
+            closeGame();
         }
 
         // 切换底部导航
