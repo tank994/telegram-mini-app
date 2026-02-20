@@ -432,60 +432,61 @@
 
     <script>
         // 游戏数据 - PG电子完整游戏列表
+        // 使用 PG Soft 官方试玩链接格式
         const gamesData = [
             // 热门游戏
-            { id: 1, name: "牛气冲天", category: "hot,asian", icon: "🐂", demoUrl: "https://www.pgsoft-slotgame.com/fortune-ox" },
-            { id: 2, name: "糖果狂欢", category: "hot,classic", icon: "🍬", demoUrl: "https://www.pgsoft-slotgame.com/candy-burst" },
-            { id: 3, name: "埃及神秘之书", category: "hot,adventure", icon: "📜", demoUrl: "https://www.pgsoft-slotgame.com/egypts-book-of-mystery" },
-            { id: 4, name: "龙蛋破壳", category: "hot,fantasy", icon: "🐉", demoUrl: "https://www.pgsoft-slotgame.com/dragon-hatch" },
-            { id: 5, name: "宝石狂欢", category: "hot,classic", icon: "💎", demoUrl: "https://www.pgsoft-slotgame.com/gems-bonanza" },
+            { id: 1, name: "牛气冲天", category: "hot,asian", icon: "🐂", demoUrl: "https://m.pgsoft-games.com/98/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 2, name: "糖果狂欢", category: "hot,classic", icon: "🍬", demoUrl: "https://m.pgsoft-games.com/2/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 3, name: "埃及神秘之书", category: "hot,adventure", icon: "📜", demoUrl: "https://m.pgsoft-games.com/77/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 4, name: "龙蛋破壳", category: "hot,fantasy", icon: "🐉", demoUrl: "https://m.pgsoft-games.com/68/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 5, name: "宝石狂欢", category: "hot,classic", icon: "💎", demoUrl: "https://m.pgsoft-games.com/104/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
             
             // 最新游戏 2025
-            { id: 6, name: "太阳神传说", category: "new,hot,adventure", icon: "☀️", demoUrl: "https://www.pgsoft-slotgame.com/legend-of-sun" },
-            { id: 7, name: "赢财神", category: "new,hot,asian", icon: "💰", demoUrl: "https://www.pgsoft-slotgame.com/fortune-god" },
-            { id: 8, name: "招财喵", category: "new,asian", icon: "🐱", demoUrl: "https://www.pgsoft-slotgame.com/lucky-neko" },
-            { id: 9, name: "财富传奇", category: "new", icon: "👑", demoUrl: "https://www.pgsoft-slotgame.com/wealth-legend" },
-            { id: 10, name: "神秘海域", category: "new,adventure", icon: "🌊", demoUrl: "https://www.pgsoft-slotgame.com/mystery-sea" },
+            { id: 6, name: "太阳神传说", category: "new,hot,adventure", icon: "☀️", demoUrl: "https://m.pgsoft-games.com/140/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 7, name: "赢财神", category: "new,hot,asian", icon: "💰", demoUrl: "https://m.pgsoft-games.com/135/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 8, name: "招财喵", category: "new,asian", icon: "🐱", demoUrl: "https://m.pgsoft-games.com/112/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 9, name: "财富传奇", category: "new", icon: "👑", demoUrl: "https://m.pgsoft-games.com/127/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 10, name: "神秘海域", category: "new,adventure", icon: "🌊", demoUrl: "https://m.pgsoft-games.com/118/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
             
             // 经典游戏
-            { id: 11, name: "麻将胡了", category: "classic,asian", icon: "🀄", demoUrl: "https://www.pgsoft-slotgame.com/mahjong-ways" },
-            { id: 12, name: "水果派对", category: "classic", icon: "🍎", demoUrl: "https://www.pgsoft-slotgame.com/fruity-candy" },
-            { id: 13, name: "功夫熊猫", category: "classic,asian", icon: "🐼", demoUrl: "https://www.pgsoft-slotgame.com/kungfu-panda" },
-            { id: 14, name: "金蟾蜍", category: "classic,asian", icon: "🐸", demoUrl: "https://www.pgsoft-slotgame.com/golden-toad" },
-            { id: 15, name: "财神到", category: "classic,asian,hot", icon: "🧧", demoUrl: "https://www.pgsoft-slotgame.com/caishen-wins" },
+            { id: 11, name: "麻将胡了", category: "classic,asian", icon: "🀄", demoUrl: "https://m.pgsoft-games.com/74/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 12, name: "水果派对", category: "classic", icon: "🍎", demoUrl: "https://m.pgsoft-games.com/33/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 13, name: "功夫熊猫", category: "classic,asian", icon: "🐼", demoUrl: "https://m.pgsoft-games.com/45/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 14, name: "金蟾蜍", category: "classic,asian", icon: "🐸", demoUrl: "https://m.pgsoft-games.com/82/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 15, name: "财神到", category: "classic,asian,hot", icon: "🧧", demoUrl: "https://m.pgsoft-games.com/94/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
             
             // 亚洲主题
-            { id: 16, name: "中国新年", category: "asian", icon: "🧨", demoUrl: "https://www.pgsoft-slotgame.com/chinese-new-year" },
-            { id: 17, name: "舞狮", category: "asian", icon: "🦁", demoUrl: "https://www.pgsoft-slotgame.com/lion-dance" },
-            { id: 18, name: "熊猫财富", category: "asian", icon: "🐼", demoUrl: "https://www.pgsoft-slotgame.com/panda-fortune" },
-            { id: 19, name: "龙凤呈祥", category: "asian", icon: "🐲", demoUrl: "https://www.pgsoft-slotgame.com/dragon-phoenix" },
-            { id: 20, name: "金鸡报喜", category: "asian", icon: "🐔", demoUrl: "https://www.pgsoft-slotgame.com/golden-rooster" },
+            { id: 16, name: "中国新年", category: "asian", icon: "🧨", demoUrl: "https://m.pgsoft-games.com/88/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 17, name: "舞狮", category: "asian", icon: "🦁", demoUrl: "https://m.pgsoft-games.com/62/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 18, name: "熊猫财富", category: "asian", icon: "🐼", demoUrl: "https://m.pgsoft-games.com/55/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 19, name: "龙凤呈祥", category: "asian", icon: "🐲", demoUrl: "https://m.pgsoft-games.com/91/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 20, name: "金鸡报喜", category: "asian", icon: "🐔", demoUrl: "https://m.pgsoft-games.com/58/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
             
             // 冒险主题
-            { id: 21, name: "海盗寻宝", category: "adventure", icon: "🏴‍☠️", demoUrl: "https://www.pgsoft-slotgame.com/pirate-treasure" },
-            { id: 22, name: "丛林探险", category: "adventure", icon: "🌴", demoUrl: "https://www.pgsoft-slotgame.com/jungle-adventure" },
-            { id: 23, name: "金字塔之谜", category: "adventure", icon: "🔺", demoUrl: "https://www.pgsoft-slotgame.com/pyramid-mystery" },
-            { id: 24, name: "失落之城", category: "adventure", icon: "🏛️", demoUrl: "https://www.pgsoft-slotgame.com/lost-city" },
-            { id: 25, name: "深海探秘", category: "adventure", icon: "🐙", demoUrl: "https://www.pgsoft-slotgame.com/deep-sea" },
+            { id: 21, name: "海盗寻宝", category: "adventure", icon: "🏴‍☠️", demoUrl: "https://m.pgsoft-games.com/36/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 22, name: "丛林探险", category: "adventure", icon: "🌴", demoUrl: "https://m.pgsoft-games.com/41/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 23, name: "金字塔之谜", category: "adventure", icon: "🔺", demoUrl: "https://m.pgsoft-games.com/85/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 24, name: "失落之城", category: "adventure", icon: "🏛️", demoUrl: "https://m.pgsoft-games.com/108/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 25, name: "深海探秘", category: "adventure", icon: "🐙", demoUrl: "https://m.pgsoft-games.com/71/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
             
             // 奇幻主题
-            { id: 26, name: "魔法森林", category: "fantasy", icon: "🌲", demoUrl: "https://www.pgsoft-slotgame.com/magic-forest" },
-            { id: 27, name: "精灵宝藏", category: "fantasy", icon: "🧚", demoUrl: "https://www.pgsoft-slotgame.com/fairy-treasure" },
-            { id: 28, name: "巫师魔法", category: "fantasy", icon: "🧙", demoUrl: "https://www.pgsoft-slotgame.com/wizard-magic" },
-            { id: 29, name: "独角兽传说", category: "fantasy", icon: "🦄", demoUrl: "https://www.pgsoft-slotgame.com/unicorn-legend" },
-            { id: 30, name: "凤凰涅槃", category: "fantasy,asian", icon: "🔥", demoUrl: "https://www.pgsoft-slotgame.com/phoenix-reborn" },
+            { id: 26, name: "魔法森林", category: "fantasy", icon: "🌲", demoUrl: "https://m.pgsoft-games.com/49/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 27, name: "精灵宝藏", category: "fantasy", icon: "🧚", demoUrl: "https://m.pgsoft-games.com/52/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 28, name: "巫师魔法", category: "fantasy", icon: "🧙", demoUrl: "https://m.pgsoft-games.com/66/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 29, name: "独角兽传说", category: "fantasy", icon: "🦄", demoUrl: "https://m.pgsoft-games.com/79/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 30, name: "凤凰涅槃", category: "fantasy,asian", icon: "🔥", demoUrl: "https://m.pgsoft-games.com/95/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
             
             // 更多游戏
-            { id: 31, name: "幸运7", category: "classic", icon: "7️⃣", demoUrl: "https://www.pgsoft-slotgame.com/lucky-seven" },
-            { id: 32, name: "钻石女王", category: "classic", icon: "💍", demoUrl: "https://www.pgsoft-slotgame.com/diamond-queen" },
-            { id: 33, name: "黄金矿工", category: "adventure", icon: "⛏️", demoUrl: "https://www.pgsoft-slotgame.com/gold-miner" },
-            { id: 34, name: "超级777", category: "classic,hot", icon: "🎰", demoUrl: "https://www.pgsoft-slotgame.com/super-777" },
-            { id: 35, name: "疯狂猴子", category: "adventure", icon: "🐒", demoUrl: "https://www.pgsoft-slotgame.com/crazy-monkey" },
-            { id: 36, name: "冰雪女王", category: "fantasy", icon: "❄️", demoUrl: "https://www.pgsoft-slotgame.com/ice-queen" },
-            { id: 37, name: "火焰凤凰", category: "fantasy,asian", icon: "🔥", demoUrl: "https://www.pgsoft-slotgame.com/fire-phoenix" },
-            { id: 38, name: "财神爷", category: "asian,hot", icon: "🧧", demoUrl: "https://www.pgsoft-slotgame.com/wealth-god" },
-            { id: 39, name: "龙珠传奇", category: "fantasy,asian", icon: "⚪", demoUrl: "https://www.pgsoft-slotgame.com/dragon-ball" },
-            { id: 40, name: "幸运转盘", category: "classic", icon: "🎡", demoUrl: "https://www.pgsoft-slotgame.com/lucky-wheel" }
+            { id: 31, name: "幸运7", category: "classic", icon: "7️⃣", demoUrl: "https://m.pgsoft-games.com/25/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 32, name: "钻石女王", category: "classic", icon: "💍", demoUrl: "https://m.pgsoft-games.com/38/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 33, name: "黄金矿工", category: "adventure", icon: "⛏️", demoUrl: "https://m.pgsoft-games.com/44/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 34, name: "超级777", category: "classic,hot", icon: "🎰", demoUrl: "https://m.pgsoft-games.com/57/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 35, name: "疯狂猴子", category: "adventure", icon: "🐒", demoUrl: "https://m.pgsoft-games.com/61/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 36, name: "冰雪女王", category: "fantasy", icon: "❄️", demoUrl: "https://m.pgsoft-games.com/73/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 37, name: "火焰凤凰", category: "fantasy,asian", icon: "🔥", demoUrl: "https://m.pgsoft-games.com/87/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 38, name: "财神爷", category: "asian,hot", icon: "🧧", demoUrl: "https://m.pgsoft-games.com/101/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 39, name: "龙珠传奇", category: "fantasy,asian", icon: "⚪", demoUrl: "https://m.pgsoft-games.com/115/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" },
+            { id: 40, name: "幸运转盘", category: "classic", icon: "🎡", demoUrl: "https://m.pgsoft-games.com/28/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2&from=https://www.pgsoft.com/&l=m.pgsoft-games.com" }
         ];
 
         let currentCategory = 'all';
