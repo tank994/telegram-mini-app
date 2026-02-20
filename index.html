@@ -33,71 +33,220 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             text-align: center;
             cursor: pointer;
+            transition: transform 0.2s;
         }
-        .game-card img {
+        .game-card:active {
+            transform: scale(0.95);
+        }
+        .game-icon {
             width: 100%;
             height: 100px;
-            object-fit: contain;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
         }
         .game-name {
             padding: 8px;
             font-size: 12px;
             font-weight: 500;
         }
-        .loading {
+        .game-tag {
+            font-size: 10px;
+            color: #ff6b6b;
+            padding-bottom: 5px;
+        }
+        
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 320px;
+            width: 90%;
             text-align: center;
-            padding: 40px;
+        }
+        .modal-icon {
+            font-size: 80px;
+            margin-bottom: 15px;
+        }
+        .modal-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .modal-desc {
             color: #666;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        /* 游戏播放器 */
+        .game-player {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000;
+            z-index: 2000;
+            flex-direction: column;
+        }
+        .game-player.active {
+            display: flex;
+        }
+        .player-header {
+            background: #1a1a2e;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .player-frame {
+            flex: 1;
+            border: none;
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="header">🎰 PG电子试玩中心</div>
-    <div id="gamesContainer">
-        <div class="loading">加载中...</div>
+    <div class="games-grid" id="gamesGrid"></div>
+
+    <!-- 游戏详情模态框 -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">🎮</div>
+            <div class="modal-title" id="modalTitle">游戏名称</div>
+            <div class="modal-desc">PG Soft 热门电子游戏</div>
+            <button class="btn" id="playBtn">🎮 开始试玩</button>
+            <button class="btn btn-secondary" onclick="closeModal()">返回</button>
+        </div>
+    </div>
+
+    <!-- 游戏播放器 -->
+    <div class="game-player" id="gamePlayer">
+        <div class="player-header">
+            <span id="playerTitle">游戏试玩</span>
+            <button onclick="closePlayer()" style="background:none;border:none;color:white;font-size:20px;">✕</button>
+        </div>
+        <iframe class="player-frame" id="playerFrame"></iframe>
     </div>
 
     <script>
         // 游戏数据
         const games = [
-            { name: "幸运老虎机", icon: "🎰", color: "#FF6B6B" },
-            { name: "牛气冲天", icon: "🐂", color: "#4ECDC4" },
-            { name: "糖果狂欢", icon: "🍬", color: "#FFE66D" },
-            { name: "埃及神秘", icon: "📜", color: "#D4A574" },
-            { name: "龙蛋破壳", icon: "🐉", color: "#95E1D3" },
-            { name: "宝石狂欢", icon: "💎", color: "#A8E6CF" },
-            { name: "太阳神传说", icon: "☀️", color: "#FFD93D" },
-            { name: "赢财神", icon: "💰", color: "#FF6B9D" },
-            { name: "招财喵", icon: "🐱", color: "#C7CEEA" },
-            { name: "财富传奇", icon: "👑", color: "#FFD700" },
-            { name: "神秘海域", icon: "🌊", color: "#74B9FF" },
-            { name: "麻将胡了", icon: "🀄", color: "#FF7675" }
+            { id: 0, name: "幸运老虎机", icon: "🎰", color: "#FF6B6B", isLocal: true },
+            { id: 1, name: "牛气冲天", icon: "🐂", color: "#4ECDC4", isSimulated: true },
+            { id: 2, name: "糖果狂欢", icon: "🍬", color: "#FFE66D", isSimulated: true },
+            { id: 3, name: "埃及神秘", icon: "📜", color: "#D4A574", isSimulated: true },
+            { id: 4, name: "龙蛋破壳", icon: "🐉", color: "#95E1D3", isSimulated: true },
+            { id: 5, name: "宝石狂欢", icon: "💎", color: "#A8E6CF", isSimulated: true },
+            { id: 6, name: "太阳神传说", icon: "☀️", color: "#FFD93D", isSimulated: true },
+            { id: 7, name: "赢财神", icon: "💰", color: "#FF6B9D", isSimulated: true },
+            { id: 8, name: "招财喵", icon: "🐱", color: "#C7CEEA", isSimulated: true },
+            { id: 9, name: "财富传奇", icon: "👑", color: "#FFD700", isSimulated: true },
+            { id: 10, name: "神秘海域", icon: "🌊", color: "#74B9FF", isSimulated: true },
+            { id: 11, name: "麻将胡了", icon: "🀄", color: "#FF7675", isSimulated: true }
         ];
 
-        // 渲染游戏
+        let currentGame = null;
+
+        // 渲染游戏列表
         function renderGames() {
-            const container = document.getElementById('gamesContainer');
-            container.innerHTML = '<div class="games-grid"></div>';
-            const grid = container.querySelector('.games-grid');
+            const grid = document.getElementById('gamesGrid');
+            grid.innerHTML = '';
             
             games.forEach(game => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
                 card.innerHTML = `
-                    <div style="width:100%;height:100px;display:flex;align-items:center;justify-content:center;background:${game.color};font-size:50px;">
-                        ${game.icon}
-                    </div>
+                    <div class="game-icon" style="background:${game.color}20;">${game.icon}</div>
                     <div class="game-name">${game.name}</div>
+                    <div class="game-tag">${game.isLocal ? '可玩' : '演示'}</div>
                 `;
-                card.onclick = () => alert('点击了: ' + game.name);
+                card.onclick = () => openGame(game);
                 grid.appendChild(card);
             });
         }
 
-        // 页面加载完成后渲染
-        window.onload = renderGames;
+        // 打开游戏
+        function openGame(game) {
+            currentGame = game;
+            
+            if (game.isLocal) {
+                // 直接打开本地老虎机游戏
+                openPlayer(game.name, 'slot-game.html');
+            } else {
+                // 显示游戏详情
+                document.getElementById('modalIcon').textContent = game.icon;
+                document.getElementById('modalTitle').textContent = game.name;
+                document.getElementById('gameModal').classList.add('active');
+                
+                // 设置试玩按钮
+                const playBtn = document.getElementById('playBtn');
+                playBtn.onclick = () => {
+                    closeModal();
+                    // 跳转到可玩的老虎机游戏
+                    const localGame = games.find(g => g.isLocal);
+                    if (localGame) {
+                        setTimeout(() => openGame(localGame), 300);
+                    }
+                };
+            }
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('gameModal').classList.remove('active');
+        }
+
+        // 打开游戏播放器
+        function openPlayer(title, url) {
+            document.getElementById('playerTitle').textContent = title;
+            document.getElementById('playerFrame').src = url;
+            document.getElementById('gamePlayer').classList.add('active');
+        }
+
+        // 关闭游戏播放器
+        function closePlayer() {
+            document.getElementById('gamePlayer').classList.remove('active');
+            document.getElementById('playerFrame').src = '';
+        }
+
+        // 初始化
+        renderGames();
     </script>
 </body>
 </html>

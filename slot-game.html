@@ -400,7 +400,8 @@
         // 返回
         function goBack() {
             if (window.parent !== window) {
-                window.parent.postMessage('closeGame', '*');
+                // 在iframe中，通知父页面关闭
+                window.parent.closePlayer();
             } else {
                 window.history.back();
             }
