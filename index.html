@@ -6,887 +6,98 @@
     <title>PG电子试玩中心</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-blue: #4A90E2;
-            --primary-purple: #7B68EE;
-            --accent-gold: #FFD700;
-            --accent-orange: #FF6B35;
-            --bg-color: #F5F7FA;
-            --card-bg: #FFFFFF;
-            --text-primary: #1A1A2E;
-            --text-secondary: #6B7280;
-            --border-radius: 16px;
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
             min-height: 100vh;
-            color: var(--text-primary);
         }
-
-        .app-container {
-            max-width: 480px;
-            margin: 0 auto;
-            min-height: 100vh;
-            background: var(--bg-color);
-            position: relative;
-        }
-
-        /* 顶部标题栏 */
         .header {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 16px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-title {
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 16px;
-        }
-
-        .header-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 4px;
-        }
-
-        /* 搜索栏 */
-        .search-container {
-            padding: 16px 20px;
-            background: white;
-            border-bottom: 1px solid #eee;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: #F0F2F5;
-            border-radius: 25px;
-            padding: 10px 16px;
-        }
-
-        .search-box input {
-            flex: 1;
-            border: none;
-            background: none;
-            outline: none;
-            font-size: 14px;
-            margin-left: 8px;
-        }
-
-        .search-icon {
-            color: var(--text-secondary);
-            font-size: 16px;
-        }
-
-        /* 分类标签 */
-        .category-container {
-            background: white;
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-
-        .category-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .category-list {
-            display: flex;
-            gap: 10px;
-            padding: 0 16px;
-            white-space: nowrap;
-        }
-
-        .category-tag {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #E0E0E0;
-            background: white;
-            color: var(--text-secondary);
-        }
-
-        .category-tag.active {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
-            color: white;
-            border-color: transparent;
-        }
-
-        /* 游戏列表 */
-        .games-container {
             padding: 16px;
-            padding-bottom: 80px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
         }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
         .games-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
+            padding: 16px;
         }
-
         .game-card {
             background: white;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .game-card:active {
-            transform: scale(0.95);
-        }
-
-        .game-thumbnail {
-            width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .game-info {
-            padding: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             text-align: center;
+            cursor: pointer;
         }
-
+        .game-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px;
+        }
         .game-name {
-            font-size: 11px;
+            padding: 8px;
+            font-size: 12px;
             font-weight: 500;
-            color: var(--text-primary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
-
-        .game-tag {
-            font-size: 9px;
-            color: var(--accent-orange);
-            margin-top: 2px;
-        }
-
-        /* 游戏播放器模态框 */
-        .game-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            flex-direction: column;
-        }
-
-        .game-modal.active {
-            display: flex;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 20px;
-            background: #1a1a2e;
-            color: white;
-        }
-
-        .modal-title {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            padding: 4px;
-        }
-
-        .game-frame-container {
-            flex: 1;
-            position: relative;
-            background: #000;
-        }
-
-        .game-frame {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top-color: var(--accent-gold);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 16px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* 底部导航 */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 480px;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 99;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 16px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: color 0.3s;
-        }
-
-        .nav-item.active {
-            color: var(--primary-blue);
-        }
-
-        .nav-icon {
-            font-size: 20px;
-        }
-
-        .nav-label {
-            font-size: 11px;
-        }
-
-        /* 响应式优化 */
-        @media (max-width: 360px) {
-            .games-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* 滚动优化 */
-        .games-container {
-            -webkit-overflow-scrolling: touch;
-        }
-
-        /* 图片懒加载占位 */
-        .game-thumbnail {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
-
-        .game-thumbnail.loaded {
-            animation: none;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- 顶部标题栏 -->
-        <div class="header">
-            <div class="header-title">🎰 PG电子试玩中心</div>
-            <div class="header-actions">
-                <button class="header-btn">🔔</button>
-                <button class="header-btn">👤</button>
-            </div>
-        </div>
-
-        <!-- 搜索栏 -->
-        <div class="search-container">
-            <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="搜索游戏..." oninput="filterGames()">
-            </div>
-        </div>
-
-        <!-- 分类标签 -->
-        <div class="category-container">
-            <div class="category-list">
-                <div class="category-tag active" onclick="selectCategory('all')">全部</div>
-                <div class="category-tag" onclick="selectCategory('hot')">🔥 热门</div>
-                <div class="category-tag" onclick="selectCategory('new')">✨ 最新</div>
-                <div class="category-tag" onclick="selectCategory('classic')">⭐ 经典</div>
-                <div class="category-tag" onclick="selectCategory('asian')">🐉 亚洲</div>
-                <div class="category-tag" onclick="selectCategory('adventure')">🏴‍☠️ 冒险</div>
-                <div class="category-tag" onclick="selectCategory('fantasy')">🧚 奇幻</div>
-            </div>
-        </div>
-
-        <!-- 游戏列表 -->
-        <div class="games-container">
-            <div class="section-title">
-                <span>🎮</span>
-                <span id="sectionTitle">全部游戏</span>
-            </div>
-            <div class="games-grid" id="gamesGrid">
-                <!-- 游戏卡片将通过JS动态生成 -->
-            </div>
-        </div>
-
-        <!-- 底部导航 -->
-        <div class="bottom-nav">
-            <div class="nav-item active" onclick="switchTab('home')">
-                <span class="nav-icon">🏠</span>
-                <span class="nav-label">首页</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('hot')">
-                <span class="nav-icon">🔥</span>
-                <span class="nav-label">热门</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('favorites')">
-                <span class="nav-icon">❤️</span>
-                <span class="nav-label">收藏</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('profile')">
-                <span class="nav-icon">👤</span>
-                <span class="nav-label">我的</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- 游戏详情模态框 -->
-    <div class="game-modal" id="gameModal">
-        <div class="modal-header">
-            <div class="modal-title" id="modalTitle">游戏详情</div>
-            <button class="close-btn" onclick="closeGame()">✕</button>
-        </div>
-        <div class="game-detail-content" id="gameDetailContent" style="flex:1;overflow-y:auto;padding:20px;background:white;">
-            <!-- 动态内容 -->
-        </div>
-    </div>
-    
-    <!-- 游戏播放器模态框 -->
-    <div class="game-modal" id="playerModal" style="z-index:2000;">
-        <div class="modal-header">
-            <div class="modal-title" id="playerTitle">游戏试玩</div>
-            <button class="close-btn" onclick="closePlayer()">✕</button>
-        </div>
-        <div class="game-frame-container" style="flex:1;background:#000;position:relative;">
-            <div class="loading-overlay" id="playerLoading" style="display:flex;">
-                <div class="loading-spinner"></div>
-                <div>正在加载游戏...</div>
-            </div>
-            <iframe class="game-frame" id="playerFrame" style="width:100%;height:100%;border:none;" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
-        </div>
+    <div class="header">🎰 PG电子试玩中心</div>
+    <div id="gamesContainer">
+        <div class="loading">加载中...</div>
     </div>
 
     <script>
-        // 游戏数据 - 包含开源老虎机和模拟游戏
-        const gamesData = [
-            // 开源老虎机游戏（可直接玩）
-            { id: 0, name: "🎰 幸运老虎机", category: "hot,classic", iconUrl: "https://img.icons8.com/color/96/slot-machine.png", demoUrl: "slot-game.html", isLocal: true },
-            
-            // 模拟游戏（展示界面）
-            { id: 1, name: "牛气冲天", category: "hot,asian", iconUrl: "https://img.icons8.com/color/96/ox.png", demoUrl: null, isSimulated: true },
-            { id: 2, name: "糖果狂欢", category: "hot,classic", iconUrl: "https://img.icons8.com/color/96/candy.png", demoUrl: null, isSimulated: true },
-            { id: 3, name: "埃及神秘之书", category: "hot,adventure", iconUrl: "https://img.icons8.com/color/96/egyptian-pyramid.png", demoUrl: null, isSimulated: true },
-            { id: 4, name: "龙蛋破壳", category: "hot,fantasy", iconUrl: "https://img.icons8.com/color/96/dragon-egg.png", demoUrl: null, isSimulated: true },
-            { id: 5, name: "宝石狂欢", category: "hot,classic", iconUrl: "https://img.icons8.com/color/96/gem-stone.png", demoUrl: null, isSimulated: true },
-            
-            // 更多模拟游戏
-            { id: 6, name: "太阳神传说", category: "new,hot,adventure", iconUrl: "https://img.icons8.com/color/96/sun.png", demoUrl: null, isSimulated: true },
-            { id: 7, name: "赢财神", category: "new,hot,asian", iconUrl: "https://img.icons8.com/color/96/money.png", demoUrl: null, isSimulated: true },
-            { id: 8, name: "招财喵", category: "new,asian", iconUrl: "https://img.icons8.com/color/96/lucky-cat.png", demoUrl: null, isSimulated: true },
-            { id: 9, name: "财富传奇", category: "new", iconUrl: "https://img.icons8.com/color/96/crown.png", demoUrl: null, isSimulated: true },
-            { id: 10, name: "神秘海域", category: "new,adventure", iconUrl: "https://img.icons8.com/color/96/wave.png", demoUrl: null, isSimulated: true },
-            { id: 11, name: "麻将胡了", category: "classic,asian", iconUrl: "https://img.icons8.com/color/96/mahjong.png", demoUrl: null, isSimulated: true },
-            { id: 12, name: "水果派对", category: "classic", iconUrl: "https://img.icons8.com/color/96/fruits.png", demoUrl: null, isSimulated: true },
-            { id: 13, name: "功夫熊猫", category: "classic,asian", iconUrl: "https://img.icons8.com/color/96/panda.png", demoUrl: null, isSimulated: true },
-            { id: 14, name: "金蟾蜍", category: "classic,asian", iconUrl: "https://img.icons8.com/color/96/frog.png", demoUrl: null, isSimulated: true },
-            { id: 15, name: "财神到", category: "classic,asian,hot", iconUrl: "https://img.icons8.com/color/96/red-envelope.png", demoUrl: null, isSimulated: true },
-            { id: 16, name: "中国新年", category: "asian", iconUrl: "https://img.icons8.com/color/96/firework.png", demoUrl: null, isSimulated: true },
-            { id: 17, name: "舞狮", category: "asian", iconUrl: "https://img.icons8.com/color/96/lion.png", demoUrl: null, isSimulated: true },
-            { id: 18, name: "熊猫财富", category: "asian", iconUrl: "https://img.icons8.com/color/96/panda.png", demoUrl: null, isSimulated: true },
-            { id: 19, name: "龙凤呈祥", category: "asian", iconUrl: "https://img.icons8.com/color/96/dragon.png", demoUrl: null, isSimulated: true },
-            { id: 20, name: "金鸡报喜", category: "asian", iconUrl: "https://img.icons8.com/color/96/chicken.png", demoUrl: null, isSimulated: true },
-            { id: 21, name: "海盗寻宝", category: "adventure", iconUrl: "https://img.icons8.com/color/96/pirate.png", demoUrl: null, isSimulated: true },
-            { id: 22, name: "丛林探险", category: "adventure", iconUrl: "https://img.icons8.com/color/96/jungle.png", demoUrl: null, isSimulated: true },
-            { id: 23, name: "金字塔之谜", category: "adventure", iconUrl: "https://img.icons8.com/color/96/pyramid.png", demoUrl: null, isSimulated: true },
-            { id: 24, name: "失落之城", category: "adventure", iconUrl: "https://img.icons8.com/color/96/ruins.png", demoUrl: null, isSimulated: true },
-            { id: 25, name: "深海探秘", category: "adventure", iconUrl: "https://img.icons8.com/color/96/octopus.png", demoUrl: null, isSimulated: true },
-            { id: 26, name: "魔法森林", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/forest.png", demoUrl: null, isSimulated: true },
-            { id: 27, name: "精灵宝藏", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/fairy.png", demoUrl: null, isSimulated: true },
-            { id: 28, name: "巫师魔法", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/wizard.png", demoUrl: null, isSimulated: true },
-            { id: 29, name: "独角兽传说", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/unicorn.png", demoUrl: null, isSimulated: true },
-            { id: 30, name: "凤凰涅槃", category: "fantasy,asian", iconUrl: "https://img.icons8.com/color/96/phoenix.png", demoUrl: null, isSimulated: true },
-            { id: 31, name: "幸运7", category: "classic", iconUrl: "https://img.icons8.com/color/96/7.png", demoUrl: null, isSimulated: true },
-            { id: 32, name: "钻石女王", category: "classic", iconUrl: "https://img.icons8.com/color/96/diamond.png", demoUrl: null, isSimulated: true },
-            { id: 33, name: "黄金矿工", category: "adventure", iconUrl: "https://img.icons8.com/color/96/gold.png", demoUrl: null, isSimulated: true },
-            { id: 34, name: "超级777", category: "classic,hot", iconUrl: "https://img.icons8.com/color/96/slot-machine.png", demoUrl: null, isSimulated: true },
-            { id: 35, name: "疯狂猴子", category: "adventure", iconUrl: "https://img.icons8.com/color/96/monkey.png", demoUrl: null, isSimulated: true },
-            { id: 36, name: "冰雪女王", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/ice.png", demoUrl: null, isSimulated: true },
-            { id: 37, name: "火焰凤凰", category: "fantasy,asian", iconUrl: "https://img.icons8.com/color/96/fire.png", demoUrl: null, isSimulated: true },
-            { id: 38, name: "财神爷", category: "asian,hot", iconUrl: "https://img.icons8.com/color/96/god-of-wealth.png", demoUrl: null, isSimulated: true },
-            { id: 39, name: "龙珠传奇", category: "fantasy,asian", iconUrl: "https://img.icons8.com/color/96/dragon-ball.png", demoUrl: null, isSimulated: true },
-            { id: 40, name: "幸运转盘", category: "classic", iconUrl: "https://img.icons8.com/color/96/roulette.png", demoUrl: null, isSimulated: true }
-        ];
-            // 热门游戏
-            { id: 1, name: "牛气冲天", category: "hot,asian", iconUrl: "https://img.icons8.com/color/96/ox.png", demoUrl: "https://slotdemo.pgsoft.com/98/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2" },
-            { id: 2, name: "糖果狂欢", category: "hot,classic", iconUrl: "https://img.icons8.com/color/96/candy.png", demoUrl: "https://slotdemo.pgsoft.com/2/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2" },
-            { id: 3, name: "埃及神秘之书", category: "hot,adventure", iconUrl: "https://img.icons8.com/color/96/egyptian-pyramid.png", demoUrl: "https://slotdemo.pgsoft.com/77/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2" },
-            { id: 4, name: "龙蛋破壳", category: "hot,fantasy", iconUrl: "https://img.icons8.com/color/96/dragon-egg.png", demoUrl: "https://slotdemo.pgsoft.com/68/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2" },
-            { id: 5, name: "宝石狂欢", category: "hot,classic", iconUrl: "https://img.icons8.com/color/96/gem-stone.png", demoUrl: "https://slotdemo.pgsoft.com/104/index.html?language=zh&bet_type=1&operator_token=ca7094186b309ee149c55c8822e7ecf2" },
-            
-            // 最新游戏
-            { id: 6, name: "太阳神传说", category: "new,hot,adventure", iconUrl: "https://img.icons8.com/color/96/sun.png", demoUrl: "https://www.pgsoft.com/en/games/legend-of-sun/" },
-            { id: 7, name: "赢财神", category: "new,hot,asian", iconUrl: "https://img.icons8.com/color/96/money.png", demoUrl: "https://www.pgsoft.com/en/games/fortune-god/" },
-            { id: 8, name: "招财喵", category: "new,asian", iconUrl: "https://img.icons8.com/color/96/lucky-cat.png", demoUrl: "https://www.pgsoft.com/en/games/lucky-neko/" },
-            { id: 9, name: "财富传奇", category: "new", iconUrl: "https://img.icons8.com/color/96/crown.png", demoUrl: "https://www.pgsoft.com/en/games/wealth-legend/" },
-            { id: 10, name: "神秘海域", category: "new,adventure", iconUrl: "https://img.icons8.com/color/96/wave.png", demoUrl: "https://www.pgsoft.com/en/games/mystery-sea/" },
-            
-            // 经典游戏
-            { id: 11, name: "麻将胡了", category: "classic,asian", iconUrl: "https://img.icons8.com/color/96/mahjong.png", demoUrl: "https://www.pgsoft.com/en/games/mahjong-ways/" },
-            { id: 12, name: "水果派对", category: "classic", iconUrl: "https://img.icons8.com/color/96/fruits.png", demoUrl: "https://www.pgsoft.com/en/games/fruity-candy/" },
-            { id: 13, name: "功夫熊猫", category: "classic,asian", iconUrl: "https://img.icons8.com/color/96/panda.png", demoUrl: "https://www.pgsoft.com/en/games/kungfu-panda/" },
-            { id: 14, name: "金蟾蜍", category: "classic,asian", iconUrl: "https://img.icons8.com/color/96/frog.png", demoUrl: "https://www.pgsoft.com/en/games/golden-toad/" },
-            { id: 15, name: "财神到", category: "classic,asian,hot", iconUrl: "https://img.icons8.com/color/96/red-envelope.png", demoUrl: "https://www.pgsoft.com/en/games/caishen-wins/" },
-            
-            // 亚洲主题
-            { id: 16, name: "中国新年", category: "asian", iconUrl: "https://img.icons8.com/color/96/firework.png", demoUrl: "https://www.pgsoft.com/en/games/chinese-new-year/" },
-            { id: 17, name: "舞狮", category: "asian", iconUrl: "https://img.icons8.com/color/96/lion.png", demoUrl: "https://www.pgsoft.com/en/games/lion-dance/" },
-            { id: 18, name: "熊猫财富", category: "asian", iconUrl: "https://img.icons8.com/color/96/panda.png", demoUrl: "https://www.pgsoft.com/en/games/panda-fortune/" },
-            { id: 19, name: "龙凤呈祥", category: "asian", iconUrl: "https://img.icons8.com/color/96/dragon.png", demoUrl: "https://www.pgsoft.com/en/games/dragon-phoenix/" },
-            { id: 20, name: "金鸡报喜", category: "asian", iconUrl: "https://img.icons8.com/color/96/chicken.png", demoUrl: "https://www.pgsoft.com/en/games/golden-rooster/" },
-            
-            // 冒险主题
-            { id: 21, name: "海盗寻宝", category: "adventure", iconUrl: "https://img.icons8.com/color/96/pirate.png", demoUrl: "https://www.pgsoft.com/en/games/pirate-treasure/" },
-            { id: 22, name: "丛林探险", category: "adventure", iconUrl: "https://img.icons8.com/color/96/jungle.png", demoUrl: "https://www.pgsoft.com/en/games/jungle-adventure/" },
-            { id: 23, name: "金字塔之谜", category: "adventure", iconUrl: "https://img.icons8.com/color/96/pyramid.png", demoUrl: "https://www.pgsoft.com/en/games/pyramid-mystery/" },
-            { id: 24, name: "失落之城", category: "adventure", iconUrl: "https://img.icons8.com/color/96/ruins.png", demoUrl: "https://www.pgsoft.com/en/games/lost-city/" },
-            { id: 25, name: "深海探秘", category: "adventure", iconUrl: "https://img.icons8.com/color/96/octopus.png", demoUrl: "https://www.pgsoft.com/en/games/deep-sea/" },
-            
-            // 奇幻主题
-            { id: 26, name: "魔法森林", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/forest.png", demoUrl: "https://www.pgsoft.com/en/games/magic-forest/" },
-            { id: 27, name: "精灵宝藏", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/fairy.png", demoUrl: "https://www.pgsoft.com/en/games/fairy-treasure/" },
-            { id: 28, name: "巫师魔法", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/wizard.png", demoUrl: "https://www.pgsoft.com/en/games/wizard-magic/" },
-            { id: 29, name: "独角兽传说", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/unicorn.png", demoUrl: "https://www.pgsoft.com/en/games/unicorn-legend/" },
-            { id: 30, name: "凤凰涅槃", category: "fantasy,asian", iconUrl: "https://img.icons8.com/color/96/phoenix.png", demoUrl: "https://www.pgsoft.com/en/games/phoenix-reborn/" },
-            
-            // 更多游戏
-            { id: 31, name: "幸运7", category: "classic", iconUrl: "https://img.icons8.com/color/96/7.png", demoUrl: "https://www.pgsoft.com/en/games/lucky-seven/" },
-            { id: 32, name: "钻石女王", category: "classic", iconUrl: "https://img.icons8.com/color/96/diamond.png", demoUrl: "https://www.pgsoft.com/en/games/diamond-queen/" },
-            { id: 33, name: "黄金矿工", category: "adventure", iconUrl: "https://img.icons8.com/color/96/gold.png", demoUrl: "https://www.pgsoft.com/en/games/gold-miner/" },
-            { id: 34, name: "超级777", category: "classic,hot", iconUrl: "https://img.icons8.com/color/96/slot-machine.png", demoUrl: null, isSimulated: true },
-            { id: 35, name: "疯狂猴子", category: "adventure", iconUrl: "https://img.icons8.com/color/96/monkey.png", demoUrl: null, isSimulated: true },
-            { id: 36, name: "冰雪女王", category: "fantasy", iconUrl: "https://img.icons8.com/color/96/ice.png", demoUrl: null, isSimulated: true },
-            { id: 37, name: "火焰凤凰", category: "fantasy,asian", iconUrl: "https://img.icons8.com/color/96/fire.png", demoUrl: null, isSimulated: true },
-            { id: 38, name: "财神爷", category: "asian,hot", iconUrl: "https://img.icons8.com/color/96/god-of-wealth.png", demoUrl: null, isSimulated: true },
-            { id: 39, name: "龙珠传奇", category: "fantasy,asian", iconUrl: "https://img.icons8.com/color/96/dragon-ball.png", demoUrl: null, isSimulated: true },
-            { id: 40, name: "幸运转盘", category: "classic", iconUrl: "https://img.icons8.com/color/96/roulette.png", demoUrl: null, isSimulated: true }
+        // 游戏数据
+        const games = [
+            { name: "幸运老虎机", icon: "🎰", color: "#FF6B6B" },
+            { name: "牛气冲天", icon: "🐂", color: "#4ECDC4" },
+            { name: "糖果狂欢", icon: "🍬", color: "#FFE66D" },
+            { name: "埃及神秘", icon: "📜", color: "#D4A574" },
+            { name: "龙蛋破壳", icon: "🐉", color: "#95E1D3" },
+            { name: "宝石狂欢", icon: "💎", color: "#A8E6CF" },
+            { name: "太阳神传说", icon: "☀️", color: "#FFD93D" },
+            { name: "赢财神", icon: "💰", color: "#FF6B9D" },
+            { name: "招财喵", icon: "🐱", color: "#C7CEEA" },
+            { name: "财富传奇", icon: "👑", color: "#FFD700" },
+            { name: "神秘海域", icon: "🌊", color: "#74B9FF" },
+            { name: "麻将胡了", icon: "🀄", color: "#FF7675" }
         ];
 
-        let currentCategory = 'all';
-        let filteredGames = [...gamesData];
-
-        // 初始化 Telegram Web App
-        let tg = window.Telegram.WebApp;
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            try {
-                console.log('DOM loaded, gamesData length:', gamesData.length);
-                console.log('gamesData:', gamesData);
-                
-                if (typeof tg !== 'undefined') {
-                    tg.ready();
-                    tg.expand();
-                }
-                
-                // 渲染游戏列表
-                renderGames();
-                
-                // 图片懒加载
-                setupLazyLoad();
-            } catch (error) {
-                console.error('Error during initialization:', error);
-                document.getElementById('gamesGrid').innerHTML = '<div style="text-align:center;padding:40px;color:red;">加载出错: ' + error.message + '</div>';
-            }
-        });
-
-        // 渲染游戏列表
+        // 渲染游戏
         function renderGames() {
-            console.log('Rendering games, count:', filteredGames.length);
-            const grid = document.getElementById('gamesGrid');
-            if (!grid) {
-                console.error('gamesGrid element not found!');
-                return;
-            }
-            grid.innerHTML = '';
+            const container = document.getElementById('gamesContainer');
+            container.innerHTML = '<div class="games-grid"></div>';
+            const grid = container.querySelector('.games-grid');
             
-            if (filteredGames.length === 0) {
-                grid.innerHTML = '<div style="text-align:center;padding:40px;color:#999;">暂无游戏</div>';
-                return;
-            }
-            
-            filteredGames.forEach(game => {
-                console.log('Rendering game:', game.name);
+            games.forEach(game => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
-                card.onclick = () => {
-                    if (game.isLocal) {
-                        openLocalGame(game);
-                    } else if (game.isSimulated) {
-                        openGameDetail(game);
-                    } else {
-                        openGameDetail(game);
-                    }
-                };
-                
-                const isHot = game.category.includes('hot');
-                const isNew = game.category.includes('new');
-                
                 card.innerHTML = `
-                    <div style="width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);position:relative;overflow:hidden;">
-                        <img src="${game.iconUrl}" alt="${game.name}" style="width:70%;height:70%;object-fit:contain;" onerror="this.src='https://img.icons8.com/color/96/casino.png'">
-                        ${isHot ? '<div style="position:absolute;top:5px;right:5px;background:#FF6B6B;color:white;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;">HOT</div>' : ''}
-                        ${isNew ? '<div style="position:absolute;top:5px;left:5px;background:#4ECDC4;color:white;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:bold;">NEW</div>' : ''}
+                    <div style="width:100%;height:100px;display:flex;align-items:center;justify-content:center;background:${game.color};font-size:50px;">
+                        ${game.icon}
                     </div>
-                    <div class="game-info">
-                        <div class="game-name">${game.name}</div>
-                        <div class="game-tag">${game.isLocal ? '可玩' : '演示'}</div>
-                    </div>
-                `;,
-                
+                    <div class="game-name">${game.name}</div>
+                `;
+                card.onclick = () => alert('点击了: ' + game.name);
                 grid.appendChild(card);
             });
         }
 
-        // 选择分类
-        function selectCategory(category) {
-            currentCategory = category;
-            
-            // 更新标签样式
-            document.querySelectorAll('.category-tag').forEach(tag => {
-                tag.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // 更新标题
-            const titles = {
-                'all': '全部游戏',
-                'hot': '热门游戏',
-                'new': '最新游戏',
-                'classic': '经典游戏',
-                'asian': '亚洲主题',
-                'adventure': '冒险游戏',
-                'fantasy': '奇幻游戏'
-            };
-            document.getElementById('sectionTitle').textContent = titles[category] || '全部游戏';
-            
-            // 过滤游戏
-            if (category === 'all') {
-                filteredGames = [...gamesData];
-            } else {
-                filteredGames = gamesData.filter(game => game.category.includes(category));
-            }
-            
-            renderGames();
-        }
-
-        // 搜索游戏
-        function filterGames() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            if (searchTerm === '') {
-                if (currentCategory === 'all') {
-                    filteredGames = [...gamesData];
-                } else {
-                    filteredGames = gamesData.filter(game => game.category.includes(currentCategory));
-                }
-            } else {
-                filteredGames = gamesData.filter(game => 
-                    game.name.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            renderGames();
-        }
-
-        // 打开游戏
-        function openGame(game) {
-            // 触觉反馈
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-            
-            // 显示提示信息
-            showNotification('正在启动 ' + game.name + '...');
-            
-            // 使用外部浏览器打开游戏
-            // PG Soft 游戏需要通过官方渠道访问
-            const officialUrls = [
-                'https://www.pgsoft.com',
-                'https://pgsoft.com',
-                'https://www.pocketgamesoft.com'
-            ];
-            
-            // 尝试打开官方试玩页面
-            const gameSearchUrl = 'https://www.google.com/search?q=PG+Soft+' + encodeURIComponent(game.name) + '+demo';
-            
-            // 在 Telegram 内打开链接
-            if (tg.openLink) {
-                tg.openLink(gameSearchUrl, {try_instant_view: true});
-            } else {
-                window.open(gameSearchUrl, '_blank');
-            }
-        }
-        
-        // 显示通知
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 80px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: linear-gradient(135deg, #4A90E2 0%, #7B68EE 100%);
-                color: white;
-                padding: 12px 24px;
-                border-radius: 25px;
-                font-size: 14px;
-                z-index: 10000;
-                animation: slideDown 0.3s ease;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 2000);
-        }
-
-        // 关闭游戏详情
-        function closeGame() {
-            const modal = document.getElementById('gameModal');
-            modal.classList.remove('active');
-        }
-        
-        // 打开本地游戏
-        function openLocalGame(game) {
-            const modal = document.getElementById('playerModal');
-            const frame = document.getElementById('playerFrame');
-            const title = document.getElementById('playerTitle');
-            const loading = document.getElementById('playerLoading');
-            
-            title.textContent = game.name;
-            modal.classList.add('active');
-            loading.style.display = 'flex';
-            
-            // 加载本地游戏
-            frame.src = game.demoUrl;
-            
-            frame.onload = function() {
-                loading.style.display = 'none';
-            };
-            
-            // 监听子页面消息
-            window.addEventListener('message', function(e) {
-                if (e.data === 'closeGame') {
-                    closePlayer();
-                }
-            });
-            
-            // 触觉反馈
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-        }
-
-        // 打开游戏详情
-        function openGameDetail(game) {
-            const modal = document.getElementById('gameModal');
-            const title = document.getElementById('modalTitle');
-            const content = document.getElementById('gameDetailContent');
-            
-            title.textContent = game.name;
-            modal.classList.add('active');
-            
-            content.innerHTML = `
-                <div style="text-align:center;padding:40px 20px;">
-                    <div style="margin-bottom:20px;">
-                        <img src="${game.iconUrl}" alt="${game.name}" style="width:100px;height:100px;object-fit:contain;" onerror="this.src='https://img.icons8.com/color/96/casino.png'">
-                    </div>
-                    <h2 style="font-size:24px;margin-bottom:16px;color:#1A1A2E;">${game.name}</h2>
-                    <p style="color:#6B7280;margin-bottom:30px;">PG Soft 热门电子游戏</p>
-                    
-                    <div style="background:#F5F7FA;border-radius:12px;padding:20px;margin-bottom:30px;text-align:left;">
-                        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E0E0E0;">
-                            <span style="color:#6B7280;">游戏类型</span>
-                            <span style="font-weight:500;">电子老虎机</span>
-                        </div>
-                        <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #E0E0E0;">
-                            <span style="color:#6B7280;">开发商</span>
-                            <span style="font-weight:500;">PG Soft</span>
-                        </div>
-                        <div style="display:flex;justify-content:space-between;padding:10px 0;">
-                            <span style="color:#6B7280;">试玩模式</span>
-                            <span style="font-weight:500;color:#4CAF50;">✓ 支持</span>
-                        </div>
-                    </div>
-                    
-                    <button onclick="showDemoNotification()" style="
-                        background: linear-gradient(135deg, #4A90E2 0%, #7B68EE 100%);
-                        color: white;
-                        border: none;
-                        padding: 16px 40px;
-                        border-radius: 30px;
-                        font-size: 18px;
-                        font-weight: 600;
-                        cursor: pointer;
-                        width: 100%;
-                        margin-bottom: 12px;
-                    ">🎮 试玩演示</button>
-                    
-                    <button onclick="closeGame()" style="
-                        background: #F5F7FA;
-                        color: #6B7280;
-                        border: none;
-                        padding: 14px 40px;
-                        border-radius: 30px;
-                        font-size: 16px;
-                        cursor: pointer;
-                        width: 100%;
-                    ">返回</button>
-                    
-                    <p style="margin-top:20px;font-size:12px;color:#999;">
-                        演示版本 - 体验游戏界面
-                    </p>
-                </div>
-            `;
-            
-            // 触觉反馈
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-        }
-        
-        // 显示演示通知
-        function showDemoNotification() {
-            showNotification('🎮 请试玩"幸运老虎机"体验真实游戏！');
-            closeGame();
-            
-            // 自动滚动到老虎机游戏
-            setTimeout(() => {
-                const localGame = gamesData.find(g => g.isLocal);
-                if (localGame) {
-                    openLocalGame(localGame);
-                }
-            }, 1000);
-        }
-        
-        // 关闭游戏播放器
-        function closePlayer() {
-            const modal = document.getElementById('playerModal');
-            const frame = document.getElementById('playerFrame');
-            
-            modal.classList.remove('active');
-            frame.src = '';
-        }
-
-        // 切换底部导航
-        function switchTab(tab) {
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
-            
-            // 触觉反馈
-            if (tg.HapticFeedback) {
-                tg.HapticFeedback.impactOccurred('light');
-            }
-        }
-
-        // 图片懒加载
-        function setupLazyLoad() {
-            const images = document.querySelectorAll('.game-thumbnail');
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.classList.add('loaded');
-                        observer.unobserve(img);
-                    }
-                });
-            });
-            
-            images.forEach(img => imageObserver.observe(img));
-        }
-
-        // 防止模态框内滑动穿透
-        document.getElementById('gameModal').addEventListener('touchmove', function(e) {
-            e.stopPropagation();
-        }, { passive: false });
+        // 页面加载完成后渲染
+        window.onload = renderGames;
     </script>
 </body>
 </html>
