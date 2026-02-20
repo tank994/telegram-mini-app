@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PG电子试玩中心</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #4A90E2;
+            --primary-purple: #7B68EE;
+            --accent-gold: #FFD700;
+            --accent-orange: #FF6B35;
+            --bg-color: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --text-primary: #1A1A2E;
+            --text-secondary: #6B7280;
+            --border-radius: 16px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--bg-color);
+            position: relative;
+        }
+
+        /* 顶部标题栏 */
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .header-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .header-btn:hover {
+            opacity: 1;
+        }
+
+        /* 主内容区 */
+        .main-content {
+            padding: 20px;
+        }
+
+        /* 欢迎卡片 */
+        .welcome-card {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+            border-radius: var(--border-radius);
+            padding: 28px 24px;
+            color: white;
+            text-align: center;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .pixel-logo {
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+            font-family: 'Courier New', monospace;
+        }
+
+        .welcome-subtitle {
+            font-size: 12px;
+            opacity: 0.9;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-text {
+            font-size: 16px;
+            margin-bottom: 24px;
+            opacity: 0.95;
+        }
+
+        .username {
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #FF8C42 100%);
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.4);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .play-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 10px rgba(255,107,53,0.3);
+        }
+
+        /* 功能卡片 */
+        .feature-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .highlight {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s;
+        }
+
+        .feature-card:active {
+            transform: scale(0.98);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .feature-icon.blue {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+        }
+
+        .feature-icon.gold {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+        }
+
+        .feature-icon.purple {
+            background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+        }
+
+        .feature-icon.green {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+        }
+
+        .feature-content {
+            flex: 1;
+        }
+
+        .feature-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .feature-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-gold), #FFC107);
+            color: #333;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        /* 游戏展示 */
+        .games-section {
+            margin-bottom: 24px;
+        }
+
+        .games-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 4px;
+            scrollbar-width: none;
+        }
+
+        .games-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .game-card {
+            min-width: 140px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .game-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .game-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .game-status {
+            font-size: 12px;
+            color: #4CAF50;
+            font-weight: 500;
+        }
+
+        /* 底部信息 */
+        .footer {
+            background: var(--card-bg);
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            padding: 24px 20px;
+            margin-top: 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+        }
+
+        .partners {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .partner-logo {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            background: var(--bg-color);
+            border-radius: 20px;
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .bot-tag {
+            text-align: center;
+            font-size: 12px;
+            color: var(--primary-blue);
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        /* 弹窗 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 28px;
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+            animation: modalIn 0.3s;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .modal-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <div class="header-title">🎮 PG电子试玩中心</div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="showMenu()">⋮</button>
+                <button class="header-btn" onclick="closeApp()">✕</button>
+            </div>
+        </div>
+
+        <!-- 主内容 -->
+        <div class="main-content">
+            <!-- 欢迎卡片 -->
+            <div class="welcome-card">
+                <div class="pixel-logo">PG SOFT</div>
+                <div class="welcome-subtitle">POCKET GAMES SOFT</div>
+                <div class="welcome-text">
+                    欢迎，<span class="username" id="username">玩家</span>
+                </div>
+                <button class="play-btn" onclick="startGame()">🚀 立即试玩</button>
+            </div>
+
+            <!-- 功能特色 -->
+            <div class="feature-section">
+                <div class="section-title">
+                    <span>✨</span>
+                    <span><span class="highlight">PG电子</span>游戏特色</span>
+                </div>
+                <div class="feature-grid">
+                    <div class="feature-card" onclick="showFeature('simulator')">
+                        <div class="feature-icon blue">🎰</div>
+                        <div class="feature-content">
+                            <div class="feature-title">PG SOFT 试玩模拟器</div>
+                            <div class="feature-desc">零门槛畅玩体验，无需注册即点即玩</div>
+                            <span class="feature-tag">Tournament</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-card" onclick="showFeature('games')">
+                        <div class="feature-icon gold">🏆</div>
+                        <div class="feature-content">
+                            <div class="feature-title">多款爆款游戏</div>
+                            <div class="feature-desc">集中呈现热门游戏，快速试玩热门内容</div>
+                            <span class="feature-tag">Smartbot</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-card" onclick="showFeature('cross')">
+                        <div class="feature-icon purple">📱</div>
+                        <div class="feature-content">
+                            <div class="feature-title">多端无缝体验</div>
+                            <div class="feature-desc">支持iOS、Android和HTML5，随时随地畅玩</div>
+                            <span class="feature-tag">Free Game</span>
+                        </div>
+                    </div>
+
+                    <div class="feature-card" onclick="showFeature('social')">
+                        <div class="feature-icon green">🤖</div>
+                        <div class="feature-content">
+                            <div class="feature-title">智能游戏体验</div>
+                            <div class="feature-desc">沉浸式游戏体验，智能辅助功能加持</div>
+                            <span class="feature-tag">AI Powered</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 热门游戏 -->
+            <div class="games-section">
+                <div class="section-title">
+                    <span>🔥</span>
+                    <span>热门试玩</span>
+                </div>
+                <div class="games-scroll">
+                    <div class="game-card" onclick="launchGame('mahjong')">
+                        <div class="game-icon">🀄</div>
+                        <div class="game-name">麻将胡了</div>
+                        <div class="game-status">● 在线可玩</div>
+                    </div>
+                    <div class="game-card" onclick="launchGame('lucky')">
+                        <div class="game-icon">🍀</div>
+                        <div class="game-name">幸运招财</div>
+                        <div class="game-status">● 在线可玩</div>
+                    </div>
+                    <div class="game-card" onclick="launchGame('treasure')">
+                        <div class="game-icon">💎</div>
+                        <div class="game-name">寻宝奇兵</div>
+                        <div class="game-status">● 在线可玩</div>
+                    </div>
+                    <div class="game-card" onclick="launchGame('fortune')">
+                        <div class="game-icon">🧧</div>
+                        <div class="game-name">福运连连</div>
+                        <div class="game-status">● 在线可玩</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部信息 -->
+        <div class="footer">
+            <div class="partners">
+                <span class="partner-logo">PG Soft</span>
+                <span class="partner-logo">JDB</span>
+                <span class="partner-logo">CQ9</span>
+                <span class="partner-logo">JILI</span>
+            </div>
+            <div class="copyright">
+                COPYRIGHT © 2025 PG Soft RESERVED
+            </div>
+            <div class="bot-tag">@pgswmini_bot</div>
+        </div>
+    </div>
+
+    <!-- 弹窗 -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">🎮</div>
+            <div class="modal-title" id="modalTitle">提示</div>
+            <div class="modal-text" id="modalText">功能即将上线，敬请期待！</div>
+            <button class="modal-btn" onclick="closeModal()">知道了</button>
+        </div>
+    </div>
+
+    <script>
+        // 初始化 Telegram Web App
+        let tg = window.Telegram.WebApp;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            tg.ready();
+            tg.expand();
+
+            // 设置主题颜色
+            tg.setHeaderColor('#4A90E2');
+
+            // 显示用户信息
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+                document.getElementById('username').textContent = user.first_name || user.username || '玩家';
+            }
+
+            // 触觉反馈
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        });
+
+        // 开始游戏
+        function startGame() {
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
+            
+            showModal('🎰', '准备开始', '正在为您加载试玩游戏...');
+            
+            // 发送数据给 Bot
+            tg.sendData(JSON.stringify({
+                action: 'start_game',
+                timestamp: new Date().toISOString()
+            }));
+        }
+
+        // 启动具体游戏
+        function launchGame(gameId) {
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+
+            const games = {
+                'mahjong': { name: '麻将胡了', icon: '🀄' },
+                'lucky': { name: '幸运招财', icon: '🍀' },
+                'treasure': { name: '寻宝奇兵', icon: '💎' },
+                'fortune': { name: '福运连连', icon: '🧧' }
+            };
+
+            const game = games[gameId];
+            showModal(game.icon, game.name, `正在启动 ${game.name}，请稍候...`);
+
+            tg.sendData(JSON.stringify({
+                action: 'launch_game',
+                game: gameId,
+                game_name: game.name
+            }));
+        }
+
+        // 显示功能详情
+        function showFeature(feature) {
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+
+            const features = {
+                'simulator': { icon: '🎰', title: 'PG SOFT 试玩模拟器', desc: '提供最真实的PG电子试玩体验，零门槛畅玩，无需注册，即点即玩！' },
+                'games': { icon: '🏆', title: '多款爆款游戏', desc: '集中呈现热门游戏，快速试玩热门内容，提升游戏认知。' },
+                'cross': { icon: '📱', title: '多端无缝体验', desc: '支持iOS、Android和HTML5，手机PC都能玩，随时随地畅玩。' },
+                'social': { icon: '🤖', title: '智能游戏体验', desc: '沉浸式游戏体验，智能辅助功能加持，让游戏更有趣。' }
+            };
+
+            const f = features[feature];
+            showModal(f.icon, f.title, f.desc);
+        }
+
+        // 显示菜单
+        function showMenu() {
+            tg.showPopup({
+                title: '菜单',
+                message: '选择操作',
+                buttons: [
+                    { id: 'profile', text: '个人中心' },
+                    { id: 'settings', text: '设置' },
+                    { id: 'help', text: '帮助' },
+                    { id: 'cancel', text: '取消', type: 'cancel' }
+                ]
+            }, function(buttonId) {
+                if (buttonId && buttonId !== 'cancel') {
+                    showModal('📋', '功能提示', '该功能正在开发中，敬请期待！');
+                }
+            });
+        }
+
+        // 显示弹窗
+        function showModal(icon, title, text) {
+            document.getElementById('modalIcon').textContent = icon;
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalText').textContent = text;
+            document.getElementById('modal').classList.add('show');
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+
+        // 关闭应用
+        function closeApp() {
+            tg.close();
+        }
+
+        // 点击遮罩关闭弹窗
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
